@@ -19,14 +19,14 @@
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
     border-radius: 12px;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
 }
 
-.textarea {
+.textArea {
     width: 100%;
     border: 0px;
     font-size: 16px;

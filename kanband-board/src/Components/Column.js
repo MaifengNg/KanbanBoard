@@ -4,38 +4,47 @@ import Card from "./Card";
 
 function Column(props) {
     var dataArray = props.data;
-    var test = [];
-    for (var i = 0; i < dataArray.length; i++) {
-        const name = dataArray[i].name
-        test.push(
-            <Card name={name}/>
-        )
-    }
+    const [test, setTest] = useState([])
 
-    var showNewCardForm = false;
+    // for (var i = 0; i < dataArray.length; i++) {
+    //     const name = dataArray[i].name
+    //     test.push(
+    //         <Card name={name}/>
+    //     )
+    // }
 
-    function addNewCard() {
-        test.push(
-            <Card name={'oi'}/>
+    function addNewtask(newTask) {
+        var tempArray = test.slice(0, test.length)
+        tempArray.push(
+            <Card name={newTask}/>
         )
-        showNewCardForm = true;
+        setTest(tempArray)
     }
 
     return(
         <div className="column">
             <h1 >
                 {props.name}
-                {test}
             </h1>
+            <div>
+                {test}
+            </div>
             <div className = 'card' >
-                <textarea id='textarea' placeholder="Add new task!" className='textarea'>
+                <textarea 
+                    id='textArea' 
+                    placeholder="Add new task!" 
+                    className='textArea'
+                >
                 </textarea>
-                <button id='newTask' className='saveButton' onClick={() => {
-                    const newTaskToAdd = document.getElementById("textarea").value;
-                    console.log(newTaskToAdd)
-                    document.getElementById("textarea").value=null;
-                }}> 
-                    Save task
+                <button 
+                    className='saveButton' 
+                    onClick={() => {
+                        const newTaskToAdd = document.getElementById("textArea").value;
+                        document.getElementById("textArea").value=null;
+                        addNewtask(newTaskToAdd)
+                    }
+                }> 
+                Save task
                 </button>
             </div>
         </div>
