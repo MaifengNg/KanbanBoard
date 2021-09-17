@@ -1,17 +1,18 @@
 import Column from "./Components/Column";
+import './App.css'
 
 function App() {
-  const styles = {
-    column: {
-      backgroundColor: 'red',
-      align: 'centre'
-    }
-  }
+  var data = [
+    {'id': 1, 'name': 'task 1'},
+    {'id': 2, 'name': 'task 2'},
+    {'id': 3, 'name': 'task 3'}
+  ];
+
   return (
-    <div >
-      <Column style={styles.column} name={'To do'}/>
-      <Column style={styles.column} name={'In Progress'}/>
-      <Column style={styles.column} name={'Completed'}/>
+    <div className="container">
+      <Column name={'To-Do'} data={data}/>
+      <Column name={'In Progress'} data={data}/>
+      <Column name={'Completed'} data={data}/>
     </div>
   );
 }
