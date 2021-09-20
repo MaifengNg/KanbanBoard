@@ -26,9 +26,39 @@
     font-size: 14px;
 }
 
+.deleteButton {
+    background-color: red; /* Green */
+    float: right;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    display: block
+}
+
 .textArea {
     width: 100%;
     border: 0px;
     font-size: 16px;
     resize: none;
+}
+
+.cardText {
+    width: 100%;
+    text-align: left;
+}
+
+.cardTitle {
+    font-size: 10px;
+    display: flex;
+    margin: 10px;
+    padding: 10px;
+    background-color: #F5F5F5;
+    border-radius: 10px;
+}
+
+.columnTitle {
+    width: 100%;
+    font-size: 16px;
 }

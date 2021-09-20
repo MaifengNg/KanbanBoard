@@ -1,35 +1,63 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import "./Styles.css"
 import Card from "./Card";
 
 function Column(props) {
-    var dataArray = props.data;
-    const [test, setTest] = useState([])
-
-    // for (var i = 0; i < dataArray.length; i++) {
-    //     const name = dataArray[i].name
-    //     test.push(
-    //         <Card name={name}/>
-    //     )
-    // }
+    var [taskArray, setTaskArray] = useState([])
 
     function addNewtask(newTask) {
-        var tempArray = test.slice(0, test.length)
-        tempArray.push(
-            <Card name={newTask}/>
-        )
-        setTest(tempArray)
+        var newTaskArray = [...taskArray, newTask];
+        setTaskArray(newTaskArray);
+    }
+
+    function getNewtaskToAdd() {
+        const newTaskArray = document.getElementsByClassName("textArea");
+        var newTaskToAdd;
+        if (props.name === 'To-Do') {
+            newTaskToAdd = newTaskArray[0].value;
+        } else if(props.name === 'In Progress') {
+            newTaskToAdd = newTaskArray[1].value;
+        } else {
+            newTaskToAdd = newTaskArray[2].value;
+        }
+        return newTaskToAdd;
+    }
+
+    function resetAddTaskCard() {
+        const newTaskArray = document.getElementsByClassName("textArea");
+        if (props.name === 'To-Do') {
+            newTaskArray[0].value = null;
+        } else if(props.name === 'In Progress') {
+            newTaskArray[1].value = null;
+        } else {
+            newTaskArray[2].value = null;
+        }
+    }
+
+    function deleteTask(index) {
+        let newTaskArray = [...taskArray];
+        newTaskArray.splice(index, 1)
+        setTaskArray(newTaskArray);
     }
 
     return(
         <div className="column">
-            <h1 >
-                {props.name}
-            </h1>
-            <div>
-                {test}
+            <div className='cardTitle'>
+                <div className='columnTitle'>
+                    {props.name}
+                </div>
             </div>
-            <div className = 'card' >
+
+            {taskArray.map((name, index)=>{
+                return(
+                    <Card 
+                        name={name} 
+                        id={index} 
+                        deleteTask={deleteTask}
+                    />)
+            })}
+            
+            <div className='card' >
                 <textarea 
                     id='textArea' 
                     placeholder="Add new task!" 
@@ -39,9 +67,12 @@ function Column(props) {
                 <button 
                     className='saveButton' 
                     onClick={() => {
-                        const newTaskToAdd = document.getElementById("textArea").value;
-                        document.getElementById("textArea").value=null;
-                        addNewtask(newTaskToAdd)
+                        var newTaskToAdd = getNewtaskToAdd();
+                        if (newTaskToAdd !== "") {
+                            resetAddTaskCard()
+                            addNewtask(newTaskToAdd)
+                        }
+                        
                     }
                 }> 
                 Save task
