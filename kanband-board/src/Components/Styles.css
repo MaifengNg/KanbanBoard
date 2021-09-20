@@ -62,3 +62,13 @@
     width: 100%;
     font-size: 16px;
 }
+
+.maxNumCard {
+    display: inline-block;
+    text-align: left;
+    margin: 10px;
+}
+
+.cardLimitSet {
+    width: 30px;
+}

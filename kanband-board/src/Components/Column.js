@@ -3,6 +3,7 @@ import "./Styles.css"
 import Card from "./Card";
 
 function Column(props) {
+    const [maxCards, setMaxCards] = useState(10);
     var [taskArray, setTaskArray] = useState([])
 
     function addNewtask(newTask) {
@@ -40,23 +41,23 @@ function Column(props) {
         setTaskArray(newTaskArray);
     }
 
-    return(
-        <div className="column">
-            <div className='cardTitle'>
-                <div className='columnTitle'>
-                    {props.name}
-                </div>
-            </div>
+    function userSetMaxCard() {
+        const maxCardNumberArray = document.getElementsByClassName("cardLimitSet");
+        let maxCardNumber;
+        if (props.name === 'To-Do') {
+            maxCardNumber = maxCardNumberArray[0].value;
+        } else if(props.name === 'In Progress') {
+            maxCardNumber = maxCardNumberArray[1].value;
+        } else {
+            maxCardNumber = maxCardNumberArray[2].value;
+        }
+        if (maxCardNumber != null) {
+            setMaxCards(maxCardNumber);
+        }
+    }
 
-            {taskArray.map((name, index)=>{
-                return(
-                    <Card 
-                        name={name} 
-                        id={index} 
-                        deleteTask={deleteTask}
-                    />)
-            })}
-            
+    function getAddTaskCard() {
+        return (
             <div className='card' >
                 <textarea 
                     id='textArea' 
@@ -77,6 +78,58 @@ function Column(props) {
                 }> 
                 Save task
                 </button>
+            </div>
+        )
+    }
+
+    function checkIfMaxCardsReached() {
+        if (taskArray.length >= maxCards) {
+            return (
+                <h1>Maximum card capacity reached!</h1>
+            )
+        } else {
+            return (
+                getAddTaskCard()
+            )
+        }
+    }
+
+    return(
+        <div className="column">
+            <div className='cardTitle'>
+                <div className='columnTitle'>
+                    {props.name}
+                </div>
+            </div>
+
+            {taskArray.map((name, index)=>{
+                return(
+                    <Card 
+                        name={name} 
+                        id={index} 
+                        deleteTask={deleteTask}
+                    />)
+            })}
+
+            {checkIfMaxCardsReached()}
+
+            <div className='maxNumCard'>
+                Set maximum number of cards:  
+                <input 
+                    className='cardLimitSet' 
+                    placeholder={maxCards} 
+                    type='text'
+                    onKeyDown={(event)=>{
+                        if (event.key === 'Enter') {
+                            userSetMaxCard();
+                        }
+                    }}
+                >
+                </input>
+            </div>
+
+            <div className='maxNumCard'>
+                Current limit: {maxCards}
             </div>
         </div>
     )
