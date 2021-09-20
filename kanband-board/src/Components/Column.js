@@ -56,6 +56,14 @@ function Column(props) {
         }
     }
 
+    function addTask() {
+        var newTaskToAdd = getNewtaskToAdd();
+        if (newTaskToAdd !== "") {
+            resetAddTaskCard()
+            addNewtask(newTaskToAdd)
+        }
+    }
+
     function getAddTaskCard() {
         return (
             <div className='card' >
@@ -63,17 +71,17 @@ function Column(props) {
                     id='textArea' 
                     placeholder="Add new task!" 
                     className='textArea'
+                    onKeyDown={(event)=>{
+                        if (event.key === 'Enter') {
+                            addTask();
+                        }
+                    }}
                 >
                 </textarea>
                 <button 
                     className='saveButton' 
                     onClick={() => {
-                        var newTaskToAdd = getNewtaskToAdd();
-                        if (newTaskToAdd !== "") {
-                            resetAddTaskCard()
-                            addNewtask(newTaskToAdd)
-                        }
-                        
+                        addTask();
                     }
                 }> 
                 Save task
@@ -93,6 +101,7 @@ function Column(props) {
             )
         }
     }
+
 
     return(
         <div className="column">
@@ -128,8 +137,13 @@ function Column(props) {
                 </input>
             </div>
 
+            <div>
             <div className='maxNumCard'>
-                Current limit: {maxCards}
+                Current number of tasks: {taskArray.length}
+            </div>
+            <div className='maxNumCard'>
+                Current limit set: {maxCards}
+            </div>
             </div>
         </div>
     )
