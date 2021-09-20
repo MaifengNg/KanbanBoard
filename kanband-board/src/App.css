@@ -1,3 +1,47 @@
-.container {
-  display: flex;
+.addNewBoardText {
+  text-align: center;
+}
+
+.addBoardCard {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  border-radius: 12px;
+}
+
+.addBoardCard:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.addBoardCardContainer {
+  padding: 32px 16px;
+}
+
+.saveButton {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 12px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.boardDetails {
+  width: 200px;
+  position: absolute;
+  margin-left: 40%;
+  margin-top: 10%;
+}
+
+.addBoardName {
+  padding: 15px;
+  font-size: 15px;
+}
+
+.addBoardDescription {
+  padding: 25px;
+  font-size: 15px;
 }

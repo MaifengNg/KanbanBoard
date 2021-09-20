@@ -72,3 +72,43 @@
 .cardLimitSet {
     width: 30px;
 }
+
+.container {
+    display: flex;
+}
+
+.boardName {
+    resize: none;
+    border: none;
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+}
+
+.boardDescription {
+    resize: none;
+    border: none;
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+    flex: 1;
+    width: 100%;
+}
+
+.allBoardButton {
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 12px;
+    display: inline-block;
+    font-size: 14px;
+    color: black;
+}
+
+.boardTitleContainer {
+    display: -webkit-flex;
+    flex: 1
+}

@@ -3,27 +3,49 @@ import "./Styles.css"
 import Card from "./Card";
 
 function Column(props) {
-    const [maxCards, setMaxCards] = useState(10);
-    var [taskArray, setTaskArray] = useState([])
 
+    // We set the variables for the number of cards in each column
+    const [maxCards, setMaxCards] = useState(10);
+
+    // We use taskArray to store all the tasks given
+    var [taskArray, setTaskArray] = useState(props.data)
+
+    //idk why is it like this
+    var [isFirst, setIsFirst] = useState(true);
+
+    // We update the taskArray with the new task
     function addNewtask(newTask) {
-        var newTaskArray = [...taskArray, newTask];
-        setTaskArray(newTaskArray);
+        var newTaskArray;
+        if (isFirst) {
+            setIsFirst(false);
+            newTaskArray = [...taskArray];
+            setTaskArray(newTaskArray); 
+        } else {
+            newTaskArray = [...taskArray, newTask];
+            setTaskArray(newTaskArray); 
+        }
+        
     }
 
+    // We get the new task to add
     function getNewtaskToAdd() {
         const newTaskArray = document.getElementsByClassName("textArea");
         var newTaskToAdd;
+
         if (props.name === 'To-Do') {
             newTaskToAdd = newTaskArray[0].value;
+            props.updateData('To-Do', newTaskToAdd);
         } else if(props.name === 'In Progress') {
             newTaskToAdd = newTaskArray[1].value;
+            props.updateData('In Progress', newTaskToAdd);
         } else {
             newTaskToAdd = newTaskArray[2].value;
+            props.updateData('Completed', newTaskToAdd);
         }
         return newTaskToAdd;
     }
 
+    // we reset the card after adding new task
     function resetAddTaskCard() {
         const newTaskArray = document.getElementsByClassName("textArea");
         if (props.name === 'To-Do') {
@@ -35,12 +57,17 @@ function Column(props) {
         }
     }
 
+    // we delete a task from the taskArray
     function deleteTask(index) {
         let newTaskArray = [...taskArray];
         newTaskArray.splice(index, 1)
+        props.deleteData(props.name, index);
         setTaskArray(newTaskArray);
+        
     }
 
+    // We let the user set the maximum number of cards
+    // in the column
     function userSetMaxCard() {
         const maxCardNumberArray = document.getElementsByClassName("cardLimitSet");
         let maxCardNumber;
@@ -56,6 +83,7 @@ function Column(props) {
         }
     }
 
+    // we add task 
     function addTask() {
         var newTaskToAdd = getNewtaskToAdd();
         if (newTaskToAdd !== "") {
@@ -64,6 +92,7 @@ function Column(props) {
         }
     }
 
+    // we return the add task card
     function getAddTaskCard() {
         return (
             <div className='card' >
@@ -90,6 +119,9 @@ function Column(props) {
         )
     }
 
+    // we use this function to return an add task card if
+    // the limit has not been reach else
+    // we do not allow them to add new task
     function checkIfMaxCardsReached() {
         if (taskArray.length >= maxCards) {
             return (
