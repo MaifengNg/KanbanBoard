@@ -56,9 +56,6 @@ function Board(props) {
       props.changeDescription(newBoardDescription);
     }
 
-    function updateLimit(newLimit) {
-    }
-
     return (
       <div>
         <div className='boardTitleContainer'>

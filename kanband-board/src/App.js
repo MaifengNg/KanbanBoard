@@ -26,7 +26,10 @@ function App() {
     let showBoardArray = [];
     for (var i = 0; i< boardList.length; i++) {
       let currentBoard = boardList[i].board;
-      let currentBoardName = currentBoard.props.name[0];
+      let currentBoardName = currentBoard.props.name[currentBoard.props.name.length-1];
+      if (currentBoardName === undefined && currentBoard.props.name.length === 0) {
+        currentBoardName = "Board name";
+      }
       showBoardArray.push(
         <div
             className="addBoardCard" 
