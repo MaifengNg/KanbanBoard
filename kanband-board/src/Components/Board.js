@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import Column from "./Column";
 
 function Board(props) {
-    var [name, setName] = useState(props.name);
+    var [name, setName] = useState();
     var [description, setDescription] = useState();
 
     var [dataToDO, setDataToDO] = useState(props.dataToDO);
     var [dataInProgress, setDataInProgress] = useState(props.dataInProgress);
     var [dataCompleted, setDataCompleted] = useState(props.dataCompleted);
+
     
     // We update the state everytime the 
     // user adds a new task
@@ -38,7 +39,7 @@ function Board(props) {
     // We change the board's name
     function changeBoardName() {
       let newBoardName = document.getElementsByClassName("boardName")[0].value;
-      setName([newBoardName]);
+      setName(newBoardName);
       props.changeName(props.id, newBoardName);
     }
 
@@ -49,8 +50,6 @@ function Board(props) {
       setDescription(newBoardDescription);
       props.changeDescription(newBoardDescription);
     }
-
-    console.log(name)
   
     return (
       <div>

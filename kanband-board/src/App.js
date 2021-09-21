@@ -3,6 +3,9 @@ import { useState } from "react";
 import './App.css'
 
 function App() {
+  let myStorage;
+  myStorage = window.localStorage;
+
   const [showBoard, setShowBoard] = useState(null);
   const [addNewBoardCard, setAddNewBoardCard] = useState(true);
   var [boardList, setBoardList] = useState([])
@@ -12,10 +15,11 @@ function App() {
     var newBoardList = [...boardList];
     newBoardList.push({
       "id": boardList.length+1,
+      "name": '',
       "board": <Board seeAllBoards={seeAllBoards}
                 dataToDO={[]} dataInProgress={[]} dataCompleted={[]} id={boardList.length+1} 
                 changeName={changeName} changeDescription={changeDescription}
-                name={[]} />,
+                name={[]} myStorage={myStorage}/>,
     });
     boardList = newBoardList;
     setBoardList(newBoardList);
@@ -26,6 +30,7 @@ function App() {
     let showBoardArray = [];
     for (var i = 0; i< boardList.length; i++) {
       let currentBoard = boardList[i].board;
+      console.log("board "+i+"  "+currentBoard.name)
       showBoardArray.push(
         <div
             className="addBoardCard" 
@@ -46,7 +51,6 @@ function App() {
       <div 
           className="addBoardCard" 
           onClick={()=>{
-            setAddNewBoardCard(false);
             setAddNewBoardCard(false);
             addNewBoard();
             let newBoard = boardList[boardList.length-1].board;

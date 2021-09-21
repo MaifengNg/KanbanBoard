@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import "./Styles.css"
 import Card from "./Card";
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 function Column(props) {
 
@@ -142,16 +143,14 @@ function Column(props) {
                     {props.name}
                 </div>
             </div>
-
             {taskArray.map((name, index)=>{
-                return(
-                    <Card 
-                        name={name} 
-                        id={index} 
-                        deleteTask={deleteTask}
-                    />)
-            })}
-
+                            return(
+                                <Card 
+                                    name={name} 
+                                    id={index} 
+                                    deleteTask={deleteTask}
+                                />)
+                        })}
             {checkIfMaxCardsReached()}
 
             <div className='maxNumCard'>
