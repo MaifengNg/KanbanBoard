@@ -2,14 +2,18 @@ import { useEffect, useState } from "react";
 import Column from "./Column";
 
 function Board(props) {
-    var [name, setName] = useState();
+    var [name, setName] = useState(props.name);
     var [description, setDescription] = useState();
 
     var [dataToDO, setDataToDO] = useState(props.dataToDO);
     var [dataInProgress, setDataInProgress] = useState(props.dataInProgress);
     var [dataCompleted, setDataCompleted] = useState(props.dataCompleted);
 
-    
+    var [limitTodo, setLimitTodo] = useState(props.limitTodo);
+    var [limitInProgress, setLimitInProgress] = useState(props.limitInProgress);
+    var [limitCompleted, setLimitCompleted] = useState(props.limitCompleted);
+
+
     // We update the state everytime the 
     // user adds a new task
     function updateData(columnName, newTask) {
@@ -41,6 +45,7 @@ function Board(props) {
       let newBoardName = document.getElementsByClassName("boardName")[0].value;
       setName(newBoardName);
       props.changeName(props.id, newBoardName);
+      name.push(newBoardName);
     }
 
 
@@ -50,7 +55,10 @@ function Board(props) {
       setDescription(newBoardDescription);
       props.changeDescription(newBoardDescription);
     }
-  
+
+    function updateLimit(newLimit) {
+    }
+
     return (
       <div>
         <div className='boardTitleContainer'>
@@ -64,13 +72,13 @@ function Board(props) {
               if (event.key === 'Enter') {
                   changeBoardName();
               }
-          }}>{name}
+          }}>{name[name.length-1]}
           </textarea>
         </div>
         <div className="container">
-          <Column name={'To-Do'} data={dataToDO} updateData={updateData} deleteData={deleteData}/>
-          <Column name={'In Progress'} data={dataInProgress} updateData={updateData} deleteData={deleteData}/>
-          <Column name={'Completed'} data={dataCompleted} updateData={updateData} deleteData={deleteData}/>
+          <Column name={'To-Do'} data={dataToDO} updateData={updateData} deleteData={deleteData} limit={limitTodo}/>
+          <Column name={'In Progress'} data={dataInProgress} updateData={updateData} deleteData={deleteData} limit={limitInProgress}/>
+          <Column name={'Completed'} data={dataCompleted} updateData={updateData} deleteData={deleteData} limit={limitCompleted}/>
         </div>
       </div>
     );

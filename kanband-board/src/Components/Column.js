@@ -6,7 +6,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 function Column(props) {
 
     // We set the variables for the number of cards in each column
-    const [maxCards, setMaxCards] = useState(10);
+    const [maxCards, setMaxCards] = useState(props.limit[props.limit.length-1]);
 
     // We use taskArray to store all the tasks given
     var [taskArray, setTaskArray] = useState(props.data)
@@ -81,6 +81,7 @@ function Column(props) {
         }
         if (maxCardNumber != null) {
             setMaxCards(maxCardNumber);
+            props.limit.push(maxCardNumber)
         }
     }
 
@@ -144,13 +145,13 @@ function Column(props) {
                 </div>
             </div>
             {taskArray.map((name, index)=>{
-                            return(
-                                <Card 
-                                    name={name} 
-                                    id={index} 
-                                    deleteTask={deleteTask}
-                                />)
-                        })}
+                return(
+                    <Card 
+                        name={name} 
+                        id={index} 
+                        deleteTask={deleteTask}
+                    />)
+            })}
             {checkIfMaxCardsReached()}
 
             <div className='maxNumCard'>
