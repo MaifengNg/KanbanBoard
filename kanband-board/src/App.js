@@ -3,9 +3,6 @@ import { useState } from "react";
 import './App.css'
 
 function App() {
-  let myStorage;
-  myStorage = window.localStorage;
-
   const [showBoard, setShowBoard] = useState(null);
   const [addNewBoardCard, setAddNewBoardCard] = useState(true);
   var [boardList, setBoardList] = useState([])
@@ -15,11 +12,10 @@ function App() {
     var newBoardList = [...boardList];
     newBoardList.push({
       "id": boardList.length+1,
-      "name": '',
       "board": <Board seeAllBoards={seeAllBoards}
                 dataToDO={[]} dataInProgress={[]} dataCompleted={[]} id={boardList.length+1} 
                 changeName={changeName} changeDescription={changeDescription}
-                name={[]} myStorage={myStorage}/>,
+                name={[]} limitTodo={[10]} limitInProgress={[10]} limitCompleted={[10]}/>,
     });
     boardList = newBoardList;
     setBoardList(newBoardList);
@@ -30,7 +26,7 @@ function App() {
     let showBoardArray = [];
     for (var i = 0; i< boardList.length; i++) {
       let currentBoard = boardList[i].board;
-      console.log("board "+i+"  "+currentBoard.name)
+      let currentBoardName = currentBoard.props.name[0];
       showBoardArray.push(
         <div
             className="addBoardCard" 
@@ -38,7 +34,7 @@ function App() {
               setAddNewBoardCard(false);
               setShowBoard(currentBoard);
             }}>
-            <h4 className="addBoardCardContainer">{boardList[i].name}</h4>
+            <h4 className="addBoardCardContainer">{currentBoardName}</h4>
         </div>)
     };
 
