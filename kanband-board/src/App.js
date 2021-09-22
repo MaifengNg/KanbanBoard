@@ -84,14 +84,6 @@ function App() {
     }
   }
 
-  // We create a new board
-  function createNewBoard() {
-    setAddNewBoardCard(false);
-    addNewBoard();
-    let currentBoard = boardList[boardList.length-1].board;
-    setShowBoard(currentBoard);
-  }
-
   // We call this function to see all previous boards
   function seeAllBoards() {
     setAddNewBoardCard(true);
@@ -119,3 +111,67 @@ function App() {
 }
 
 export default App;
+
+// import { DndProvider } from 'react-dnd'
+// import HTML5Backend from 'react-dnd-html5-backend'
+// import React, { useState } from 'react'
+// import { useDrop } from 'react-dnd';
+// import { useDrag } from 'react-dnd'
+
+// export const PetCard = ({ id, name }) => {
+//     const [{ isDragging }, dragRef] = useDrag({
+//         type: 'pet',
+//         item: { id, name },
+//         collect: (monitor) => ({
+//             isDragging: monitor.isDragging()
+//         })
+//     })
+//     return (
+//         <div className='card' ref={dragRef}>
+//             {name}
+//             {isDragging && '😱'}
+//         </div>
+//     )
+// }
+
+// const PETS = [
+//   { id: 1, name: 'dog' },
+//   { id: 2, name: 'cat' },
+//   { id: 3, name: 'fish' },
+//   { id: 4, name: 'hamster' },
+// ]
+
+// export const Basket = () => {
+//   const [basket, setBasket] = useState([])
+//   const [{ isOver }, dropRef] = useDrop({
+//       accept: 'pet',
+//       drop: (item) => setBasket((basket) => 
+//                           !basket.includes(item) ? [...basket, item] : basket),
+//       collect: (monitor) => ({
+//           isOver: monitor.isOver()
+//       })
+//   })
+
+//   return (
+//       <React.Fragment>
+//           <div className='pets'>
+//               {PETS.map(pet => <PetCard draggable id={pet.id} name={pet.name} />)}
+//           </div>
+//           <div className='basket' ref={dropRef}>
+//               {basket.map(pet => <PetCard id={pet.id} name={pet.name} />)}
+//               {isOver && <div>Drop Here!</div>}
+//           </div>
+//       </React.Fragment>
+//   )
+// }
+
+// export const App = () => {
+//   return (
+//     <DndProvider backend={HTML5Backend}>
+//       {/* Here, render a component that uses DND inside it */}
+//       <Basket />
+//     </DndProvider>
+//   )
+// }
+
+// export default App

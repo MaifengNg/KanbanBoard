@@ -1,7 +1,9 @@
-import {useEffect, useState} from 'react'
+import {useState, useCallback} from 'react'
 import "./Styles.css"
 import Card from "./Card";
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import Backend from "react-dnd-html5-backend";
 
 function Column(props) {
 
@@ -35,13 +37,13 @@ function Column(props) {
 
         if (props.name === 'To-Do') {
             newTaskToAdd = newTaskArray[0].value;
-            props.updateData('To-Do', newTaskToAdd);
         } else if(props.name === 'In Progress') {
             newTaskToAdd = newTaskArray[1].value;
-            props.updateData('In Progress', newTaskToAdd);
         } else {
             newTaskToAdd = newTaskArray[2].value;
-            props.updateData('Completed', newTaskToAdd);
+        }
+        if (newTaskToAdd !== "") {
+            props.updateData(props.name, newTaskToAdd);
         }
         return newTaskToAdd;
     }
@@ -136,6 +138,25 @@ function Column(props) {
         }
     }
 
+    const moveTaskArray = useCallback(
+        (dragIndex, hoverIndex) => {
+            const dragItem = taskArray[dragIndex]
+            const hoverItem = taskArray[hoverIndex]
+            // Swap places of dragItem and hoverItem in the taskArray
+            setTaskArray(taskArray => {
+                if (hoverItem !== undefined && dragItem !== undefined) {
+                    const updatedTaskArray = [...taskArray]
+                    updatedTaskArray[dragIndex] = hoverItem
+                    updatedTaskArray[hoverIndex] = dragItem
+                    props.updateArray(props.name, updatedTaskArray)
+                    return updatedTaskArray
+                } else {
+                    return taskArray;
+                }
+            })
+        },
+        [taskArray],
+    )
 
     return(
         <div className="column">
@@ -144,14 +165,26 @@ function Column(props) {
                     {props.name}
                 </div>
             </div>
-            {taskArray.map((name, index)=>{
+            {/* {taskArray.map((name, index)=>{
                 return(
                     <Card 
                         name={name} 
                         id={index} 
-                        deleteTask={deleteTask}
+                        deleteTask={deleteTask}   
                     />)
-            })}
+            })} */}
+            <DndProvider backend={Backend}>
+                {taskArray.map((name, index)=>{
+                    return(
+                        <Card 
+                            name={name} 
+                            id={index} 
+                            deleteTask={deleteTask} 
+                            moveTaskArray={moveTaskArray}  
+                        />)
+                })}
+            </DndProvider>
+
             {checkIfMaxCardsReached()}
 
             <div className='maxNumCard'>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Column from "./Column";
 
 function Board(props) {
@@ -56,12 +56,23 @@ function Board(props) {
       props.changeDescription(newBoardDescription);
     }
 
+    // update the entire data array
+    function updateArray(columnName, updatedTaskArray) {
+      if (columnName === 'To-Do') {
+        dataToDO.splice(0, dataToDO.length, ...updatedTaskArray)
+      } else if (columnName === 'In Progress') {
+        dataInProgress.splice(0, dataInProgress.length, ...updatedTaskArray)
+      } else {
+        dataCompleted.splice(0, dataCompleted.length, ...updatedTaskArray)
+      }
+    }
+
     return (
       <div>
         <div className='boardTitleContainer'>
-          <button className="allBoardButton" onClick={()=>{
+          {/* <button className="allBoardButton" onClick={()=>{
             props.seeAllBoards();
-          }}>See all boards!</button>
+          }}>See all boards!</button> */}
           <textarea 
             className="boardName"
             placeholder="Board Name"
@@ -73,9 +84,15 @@ function Board(props) {
           </textarea>
         </div>
         <div className="container">
-          <Column name={'To-Do'} data={dataToDO} updateData={updateData} deleteData={deleteData} limit={limitTodo}/>
-          <Column name={'In Progress'} data={dataInProgress} updateData={updateData} deleteData={deleteData} limit={limitInProgress}/>
-          <Column name={'Completed'} data={dataCompleted} updateData={updateData} deleteData={deleteData} limit={limitCompleted}/>
+          <div className='boardTitleContainer'>
+            <button className="allBoardButton" onClick={()=>{
+              props.seeAllBoards();
+            }}>See all boards!
+            </button>
+          </div>
+          <Column name={'To-Do'} data={dataToDO} updateData={updateData} deleteData={deleteData} limit={limitTodo} updateArray={updateArray}/>
+          <Column name={'In Progress'} data={dataInProgress} updateData={updateData} deleteData={deleteData} limit={limitInProgress} updateArray={updateArray}/>
+          <Column name={'Completed'} data={dataCompleted} updateData={updateData} deleteData={deleteData} limit={limitCompleted} updateArray={updateArray}/>
         </div>
       </div>
     );
