@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Column from "./Column";
+
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import Backend from "react-dnd-html5-backend";
 
 function Board(props) {
     var [name, setName] = useState(props.name);
-    var [description, setDescription] = useState();
+    var [description, setDescription] = useState(props.description);
 
     var [dataToDO, setDataToDO] = useState(props.dataToDO);
     var [dataInProgress, setDataInProgress] = useState(props.dataInProgress);
@@ -45,7 +48,7 @@ function Board(props) {
       let newBoardName = document.getElementsByClassName("boardName")[0].value;
       setName(newBoardName);
       props.changeName(props.id, newBoardName);
-      name.push(newBoardName);
+      name.splice(0, name.length, newBoardName);
     }
 
 
@@ -53,26 +56,34 @@ function Board(props) {
     function changeBoardDescription() {
       let newBoardDescription = document.getElementsByClassName("boardDescription")[0].value;
       setDescription(newBoardDescription);
-      props.changeDescription(newBoardDescription);
+      props.changeDescription(props.id, newBoardDescription);
+      description.splice(0, description.length, newBoardDescription);
     }
 
     // update the entire data array
     function updateArray(columnName, updatedTaskArray) {
+
       if (columnName === 'To-Do') {
         dataToDO.splice(0, dataToDO.length, ...updatedTaskArray)
+        setDataToDO([...dataToDO])
       } else if (columnName === 'In Progress') {
         dataInProgress.splice(0, dataInProgress.length, ...updatedTaskArray)
+        setDataInProgress([...dataInProgress])
       } else {
         dataCompleted.splice(0, dataCompleted.length, ...updatedTaskArray)
+        setDataCompleted([...dataCompleted])
       }
     }
+
+    // Update column when cards are being dragged from one column to another
+  
 
     return (
       <div>
         <div className='boardTitleContainer'>
-          {/* <button className="allBoardButton" onClick={()=>{
+          <button className="allBoardButton" onClick={()=>{
             props.seeAllBoards();
-          }}>See all boards!</button> */}
+          }}>See all boards!</button>
           <textarea 
             className="boardName"
             placeholder="Board Name"
@@ -82,17 +93,22 @@ function Board(props) {
               }
           }}>{name[name.length-1]}
           </textarea>
+          <textarea 
+            className="boardDescription"
+            placeholder="Board Description"
+            onKeyDown={(event)=>{
+              if (event.key === 'Enter') {
+                  changeBoardDescription();
+              }
+          }}>{description[description.length-1]}
+          </textarea>
         </div>
         <div className="container">
-          <div className='boardTitleContainer'>
-            <button className="allBoardButton" onClick={()=>{
-              props.seeAllBoards();
-            }}>See all boards!
-            </button>
-          </div>
-          <Column name={'To-Do'} data={dataToDO} updateData={updateData} deleteData={deleteData} limit={limitTodo} updateArray={updateArray}/>
-          <Column name={'In Progress'} data={dataInProgress} updateData={updateData} deleteData={deleteData} limit={limitInProgress} updateArray={updateArray}/>
-          <Column name={'Completed'} data={dataCompleted} updateData={updateData} deleteData={deleteData} limit={limitCompleted} updateArray={updateArray}/>
+          <DndProvider backend={Backend}>
+            <Column name={'To-Do'} data={dataToDO} updateData={updateData} deleteData={deleteData} limit={limitTodo} updateArray={updateArray} />
+            <Column name={'In Progress'} data={dataInProgress} updateData={updateData} deleteData={deleteData} limit={limitInProgress} updateArray={updateArray} />
+            <Column name={'Completed'} data={dataCompleted} updateData={updateData} deleteData={deleteData} limit={limitCompleted} updateArray={updateArray} />
+          </DndProvider>
         </div>
       </div>
     );

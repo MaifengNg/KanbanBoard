@@ -15,7 +15,8 @@ function App() {
       "board": <Board seeAllBoards={seeAllBoards}
                 dataToDO={[]} dataInProgress={[]} dataCompleted={[]} id={boardList.length+1} 
                 changeName={changeName} changeDescription={changeDescription}
-                name={[]} limitTodo={[10]} limitInProgress={[10]} limitCompleted={[10]}/>,
+                name={[]} limitTodo={[10]} limitInProgress={[10]} limitCompleted={[10]}
+                description={[]}/>,
     });
     boardList = newBoardList;
     setBoardList(newBoardList);
@@ -97,8 +98,8 @@ function App() {
   }
 
   // Change board description
-  function changeDescription(newDescription) {
-    let board = boardList[0];
+  function changeDescription(id, newDescription) {
+    let board = boardList[id-1];
     board.description = newDescription;
   }
 

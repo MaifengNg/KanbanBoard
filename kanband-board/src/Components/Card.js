@@ -5,40 +5,12 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import { useDrop } from 'react-dnd';
 import { useDrag } from 'react-dnd'
 
-// function Card(props) {
-
-//     return(
-//         <div className='card'>
-//             <h2 className='cardText'>
-//                 {props.name}
-//             </h2>
-//             <button 
-//                 className='deleteButton' 
-//                 onClick={()=>{
-//                     props.deleteTask(props.id);
-//                 }}
-//             > 
-//             Delete task
-//             </button>
-//         </div>
-//     )
-// }
-
-// export default Card;
-
 function Card(props) {
-    //https://medium.com/nmc-techblog/easy-drag-and-drop-in-react-22778b30ba37
-    let index = props.id;
+    let cardId = props.id
+    let index = [props.name, props.id, props.title];
     let name = props.name;
     let moveTaskArray = props.moveTaskArray;
 
-    // const [{ isDragging }, dragRef] = useDrag({
-    //     type: 'card',
-    //     item: { id, name },
-    //     collect: (monitor) => ({
-    //         isDragging: monitor.isDragging()
-    //     })
-    // })
 
     // useDrag - the list item is draggable
     const [{ isDragging }, dragRef] = useDrag({
@@ -53,18 +25,26 @@ function Card(props) {
     const [spec, dropRef] = useDrop({
         accept: 'item',
         hover: (item, monitor) => {
+            if (!ref.current) {
+                return ;
+            }
+
             const dragIndex = item.id
             const hoverIndex = index
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
             const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top
 
+            if (dragIndex === hoverIndex) {
+                return;
+            }
+
             // if dragging down, continue only when hover is smaller than middle Y
             if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
             // if dragging up, continue only when hover is bigger than middle Y
-            if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return
+            if (dragIndex > hoverIndex && hoverActualY < hoverMiddleY) return
 
-            moveTaskArray(dragIndex, hoverIndex)
+            // moveTaskArray(dragIndex, hoverIndex)
             item.id = hoverIndex
         },
     })
@@ -84,7 +64,7 @@ function Card(props) {
                 <button 
                     className='deleteButton' 
                     onClick={()=>{
-                        props.deleteTask(index);
+                        props.deleteTask(cardId);
                     }}
                 > 
                 Delete task

@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react'
+import {useState, useCallback, useRef} from 'react'
 import "./Styles.css"
 import Card from "./Card";
 
@@ -140,8 +140,10 @@ function Column(props) {
 
     const moveTaskArray = useCallback(
         (dragIndex, hoverIndex) => {
+            console.log('oi')
             const dragItem = taskArray[dragIndex]
             const hoverItem = taskArray[hoverIndex]
+            
             // Swap places of dragItem and hoverItem in the taskArray
             setTaskArray(taskArray => {
                 if (hoverItem !== undefined && dragItem !== undefined) {
@@ -158,21 +160,48 @@ function Column(props) {
         [taskArray],
     )
 
+    const [{ isOver }, dropRef] = useDrop({
+        accept: 'item',
+        drop: (item) => setTaskArray((taskArray) => {
+            let dragCardIndex = item.index[1];
+            let dragCardName = item.index[0];
+
+            let replaceCardIndex = item.id[1];
+            let replaceCardName = item.id[0];
+            
+            let boardNameDrag = item.index[2];
+            let boardNameDropped = item.id[2];
+            if (boardNameDropped === boardNameDrag) {
+                let newTaskArray = [...taskArray];
+                newTaskArray.splice(dragCardIndex, 1, replaceCardName);
+                newTaskArray.splice(replaceCardIndex, 1, dragCardName);
+                props.updateArray(props.name, newTaskArray)
+                return newTaskArray;
+            } else {
+                if (checkIfMaxCardsReached()) {
+                    let dropTaskArray = [...taskArray]
+                    dropTaskArray.splice(dragCardIndex, 0, dragCardName);
+                    
+                    return dropTaskArray;
+                } else {
+                    return taskArray;
+                }
+                
+            }
+            
+        }),
+        collect: (monitor) => ({
+            isOver: monitor.isOver()
+        })
+    })
+
     return(
-        <div className="column">
+        <div className="column" ref={dropRef}>
             <div className='cardTitle'>
                 <div className='columnTitle'>
                     {props.name}
                 </div>
             </div>
-            {/* {taskArray.map((name, index)=>{
-                return(
-                    <Card 
-                        name={name} 
-                        id={index} 
-                        deleteTask={deleteTask}   
-                    />)
-            })} */}
             <DndProvider backend={Backend}>
                 {taskArray.map((name, index)=>{
                     return(
@@ -181,10 +210,11 @@ function Column(props) {
                             id={index} 
                             deleteTask={deleteTask} 
                             moveTaskArray={moveTaskArray}  
+                            title={props.name}
                         />)
                 })}
             </DndProvider>
-
+            {isOver}
             {checkIfMaxCardsReached()}
 
             <div className='maxNumCard'>
