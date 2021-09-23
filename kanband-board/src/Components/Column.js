@@ -160,6 +160,16 @@ function Column(props) {
         [taskArray],
     )
 
+    const [{ isOver }, dropRef] = useDrop({
+        accept: 'item',
+        drop: () => {
+            return {targetName: props.name};
+        },
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+        }),
+    });
+
     // const [{ isOver }, dropRef] = useDrop({
     //     accept: 'item',
     //     drop: (item) => setTaskArray((taskArray) => {
@@ -203,7 +213,7 @@ function Column(props) {
     }, [props])
 
     return(
-        <div className="column">
+        <div className="column" ref={dropRef}>
             <div className='cardTitle'>
                 <div className='columnTitle'>
                     {props.name}

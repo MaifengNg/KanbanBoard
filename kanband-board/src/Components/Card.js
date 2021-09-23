@@ -24,6 +24,7 @@ function Card(props) {
     // useDrop - the list item is also a drop area
     const [spec, dropRef] = useDrop({
         accept: 'item',
+        drop: () => {return {targetIndex: cardId}},
         hover: (item, monitor) => {
             if (!ref.current) {
                 return ;

@@ -78,7 +78,9 @@ function Board(props) {
     // Update column when cards are being dragged from one column to another
     const [{ isOver }, dropRef] = useDrop({
       accept: 'item',
-      drop: (item) => setTest(() => {
+      drop: (item, monitor) => setTest(() => {
+        const dropResult = monitor.getDropResult();
+
         let dragCardIndex = item.index[1];
         let dragCardName = item.index[0];
 
@@ -86,33 +88,33 @@ function Board(props) {
         let replaceCardName = item.id[0];
         
         let boardNameDrag = item.index[2];
-        let boardNameDropped = item.id[2];
+        let boardNameDropped = dropResult.targetName;
 
         if (boardNameDropped === boardNameDrag) {
 
           if (boardNameDropped === 'To-Do') {
             dataToDO.splice(dragCardIndex, 1, replaceCardName);
             dataToDO.splice(replaceCardIndex, 1, dragCardName);
+            dataToDO = [...dataToDO]
             return dataToDO
           } else if (boardNameDropped === 'In Progress') {
             dataInProgress.splice(dragCardIndex, 1, replaceCardName);
             dataInProgress.splice(replaceCardIndex, 1, dragCardName);
+            dataInProgress = [...dataInProgress]
             return dataInProgress
           } else {
             dataCompleted.splice(dragCardIndex, 1, replaceCardName);
             dataCompleted.splice(replaceCardIndex, 1, dragCardName);
+            dataCompleted = [...dataCompleted]
             return dataCompleted
           }
 
         } else {
-          console.log(boardNameDropped)
-          console.log(boardNameDrag)
-
           
           if (boardNameDropped === 'To-Do') {
             if (dataToDO.length < limitTodo) {
               dataToDO.splice(replaceCardIndex, 0, dragCardName);
-              dataToDO = [...dataToDO]
+              // dataToDO = [...dataToDO]
             } else {
               return;
             }
@@ -120,33 +122,29 @@ function Board(props) {
           } else if (boardNameDropped === 'In Progress') {
             if (dataInProgress.length < limitInProgress) {
               dataInProgress.splice(replaceCardIndex, 0, dragCardName);
-              dataInProgress = [...dataInProgress]
+              // dataInProgress = [...dataInProgress]
             } else {
               return;
             }
           } else {
             if (dataCompleted.length < limitCompleted) {
               dataCompleted.splice(replaceCardIndex, 0, dragCardName);
-              dataCompleted = [...dataCompleted]
+              // dataCompleted = [...dataCompleted]
             } else {
               return;
             }
           }
 
-        
           if (boardNameDrag === 'To-Do') {
             dataToDO.splice(dragCardIndex, 1);
-            dataToDO = [...dataToDO]
             setDataToDO(dataToDO)
             return dataToDO
           } else if (boardNameDrag === 'In Progress') {
             dataInProgress.splice(dragCardIndex, 1);
-            dataInProgress = [...dataInProgress]
             setDataInProgress(dataInProgress)
             return dataInProgress
           } else {
             dataCompleted.splice(dragCardIndex, 1);
-            dataCompleted = [...dataCompleted]
             setDataCompleted(dataCompleted)
             return dataCompleted
           }
@@ -158,7 +156,7 @@ function Board(props) {
       })
   })
 
-    useEffect(()=>{return;})
+    // useEffect(()=>{return;})
   
 
     return (
