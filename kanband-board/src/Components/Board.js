@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Column from "./Column";
 
 import { DndProvider, useDrag, useDrop } from "react-dnd";
@@ -16,6 +16,7 @@ function Board(props) {
     var [limitInProgress, setLimitInProgress] = useState(props.limitInProgress);
     var [limitCompleted, setLimitCompleted] = useState(props.limitCompleted);
 
+    var [test, setTest] = useState([]);
 
     // We update the state everytime the 
     // user adds a new task
@@ -62,7 +63,6 @@ function Board(props) {
 
     // update the entire data array
     function updateArray(columnName, updatedTaskArray) {
-
       if (columnName === 'To-Do') {
         dataToDO.splice(0, dataToDO.length, ...updatedTaskArray)
         setDataToDO([...dataToDO])
@@ -76,6 +76,70 @@ function Board(props) {
     }
 
     // Update column when cards are being dragged from one column to another
+    const [{ isOver }, dropRef] = useDrop({
+      accept: 'item',
+      drop: (item) => setTest(() => {
+        let dragCardIndex = item.index[1];
+        let dragCardName = item.index[0];
+
+        let replaceCardIndex = item.id[1];
+        let replaceCardName = item.id[0];
+        
+        let boardNameDrag = item.index[2];
+        let boardNameDropped = item.id[2];
+
+        if (boardNameDropped === boardNameDrag) {
+
+          if (boardNameDropped === 'To-Do') {
+            dataToDO.splice(dragCardIndex, 1, replaceCardName);
+            dataToDO.splice(replaceCardIndex, 1, dragCardName);
+            return dataToDO
+          } else if (boardNameDropped === 'In Progress') {
+            dataInProgress.splice(dragCardIndex, 1, replaceCardName);
+            dataInProgress.splice(replaceCardIndex, 1, dragCardName);
+            return dataInProgress
+          } else {
+            dataCompleted.splice(dragCardIndex, 1, replaceCardName);
+            dataCompleted.splice(replaceCardIndex, 1, dragCardName);
+            return dataCompleted
+          }
+
+        } else {
+
+          if (boardNameDropped === 'To-Do') {
+            dataToDO.splice(replaceCardIndex, 0, dragCardName);
+            dataToDO = [...dataToDO]
+          } else if (boardNameDropped === 'In Progress') {
+            dataInProgress.splice(replaceCardIndex, 0, dragCardName);
+            dataInProgress = [...dataInProgress]
+          } else {
+            dataCompleted.splice(replaceCardIndex, 0, dragCardName);
+            dataCompleted = [...dataCompleted]
+          }
+
+        
+          if (boardNameDrag === 'To-Do') {
+            dataToDO.splice(dragCardIndex, 1);
+            dataToDO = [...dataToDO]
+            return dataToDO
+          } else if (boardNameDrag === 'In Progress') {
+            dataInProgress.splice(dragCardIndex, 1);
+            dataInProgress = [...dataInProgress]
+            return dataInProgress
+          } else {
+            dataCompleted.splice(dragCardIndex, 1);
+            dataCompleted = [...dataCompleted]
+            return dataCompleted
+          }
+        }
+          
+      }),
+      collect: (monitor) => ({
+          isOver: monitor.isOver()
+      })
+  })
+
+    useEffect(()=>{return;})
   
 
     return (
@@ -103,7 +167,7 @@ function Board(props) {
           }}>{description[description.length-1]}
           </textarea>
         </div>
-        <div className="container">
+        <div className="container" ref={dropRef}>
           <DndProvider backend={Backend}>
             <Column name={'To-Do'} data={dataToDO} updateData={updateData} deleteData={deleteData} limit={limitTodo} updateArray={updateArray} />
             <Column name={'In Progress'} data={dataInProgress} updateData={updateData} deleteData={deleteData} limit={limitInProgress} updateArray={updateArray} />

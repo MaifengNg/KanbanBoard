@@ -1,6 +1,8 @@
 import Board from "./Components/Board";
 import { useState } from "react";
 import './App.css'
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import Backend from "react-dnd-html5-backend";
 
 function App() {
   const [showBoard, setShowBoard] = useState(null);
@@ -106,7 +108,9 @@ function App() {
   return (
     <div>
       {showAddNewBoardCard()}
-      {showBoard}
+      <DndProvider backend={Backend}>
+        {showBoard}
+      </DndProvider>
     </div>
   );
 }

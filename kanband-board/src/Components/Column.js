@@ -150,7 +150,7 @@ function Column(props) {
                     const updatedTaskArray = [...taskArray]
                     updatedTaskArray[dragIndex] = hoverItem
                     updatedTaskArray[hoverIndex] = dragItem
-                    props.updateArray(props.name, updatedTaskArray)
+                    // props.updateArray(props.name, updatedTaskArray)
                     return updatedTaskArray
                 } else {
                     return taskArray;
@@ -160,43 +160,43 @@ function Column(props) {
         [taskArray],
     )
 
-    const [{ isOver }, dropRef] = useDrop({
-        accept: 'item',
-        drop: (item) => setTaskArray((taskArray) => {
-            let dragCardIndex = item.index[1];
-            let dragCardName = item.index[0];
+    // const [{ isOver }, dropRef] = useDrop({
+    //     accept: 'item',
+    //     drop: (item) => setTaskArray((taskArray) => {
+    //         let dragCardIndex = item.index[1];
+    //         let dragCardName = item.index[0];
 
-            let replaceCardIndex = item.id[1];
-            let replaceCardName = item.id[0];
+    //         let replaceCardIndex = item.id[1];
+    //         let replaceCardName = item.id[0];
             
-            let boardNameDrag = item.index[2];
-            let boardNameDropped = item.id[2];
-            if (boardNameDropped === boardNameDrag) {
-                let newTaskArray = [...taskArray];
-                newTaskArray.splice(dragCardIndex, 1, replaceCardName);
-                newTaskArray.splice(replaceCardIndex, 1, dragCardName);
-                props.updateArray(props.name, newTaskArray)
-                return newTaskArray;
-            } else {
-                if (checkIfMaxCardsReached()) {
-                    let dropTaskArray = [...taskArray]
-                    dropTaskArray.splice(dragCardIndex, 0, dragCardName);
+    //         let boardNameDrag = item.index[2];
+    //         let boardNameDropped = item.id[2];
+    //         if (boardNameDropped === boardNameDrag) {
+    //             let newTaskArray = [...taskArray];
+    //             newTaskArray.splice(dragCardIndex, 1, replaceCardName);
+    //             newTaskArray.splice(replaceCardIndex, 1, dragCardName);
+    //             props.updateArray(props.name, newTaskArray)
+    //             return newTaskArray;
+    //         } else {
+    //             if (checkIfMaxCardsReached()) {
+    //                 let dropTaskArray = [...taskArray]
+    //                 dropTaskArray.splice(dragCardIndex, 0, dragCardName);
                     
-                    return dropTaskArray;
-                } else {
-                    return taskArray;
-                }
+    //                 return dropTaskArray;
+    //             } else {
+    //                 return taskArray;
+    //             }
                 
-            }
+    //         }
             
-        }),
-        collect: (monitor) => ({
-            isOver: monitor.isOver()
-        })
-    })
+    //     }),
+    //     collect: (monitor) => ({
+    //         isOver: monitor.isOver()
+    //     })
+    // })
 
     return(
-        <div className="column" ref={dropRef}>
+        <div className="column">
             <div className='cardTitle'>
                 <div className='columnTitle'>
                     {props.name}
@@ -214,7 +214,7 @@ function Column(props) {
                         />)
                 })}
             </DndProvider>
-            {isOver}
+            {/* {isOver} */}
             {checkIfMaxCardsReached()}
 
             <div className='maxNumCard'>
