@@ -121,14 +121,17 @@ function Board(props) {
           if (boardNameDrag === 'To-Do') {
             dataToDO.splice(dragCardIndex, 1);
             dataToDO = [...dataToDO]
+            setDataToDO(dataToDO)
             return dataToDO
           } else if (boardNameDrag === 'In Progress') {
             dataInProgress.splice(dragCardIndex, 1);
             dataInProgress = [...dataInProgress]
+            setDataInProgress(dataInProgress)
             return dataInProgress
           } else {
             dataCompleted.splice(dragCardIndex, 1);
             dataCompleted = [...dataCompleted]
+            setDataCompleted(dataCompleted)
             return dataCompleted
           }
         }
