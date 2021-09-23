@@ -1,4 +1,4 @@
-import {useState, useCallback, useRef} from 'react'
+import {useState, useCallback, useEffect } from 'react'
 import "./Styles.css"
 import Card from "./Card";
 
@@ -194,6 +194,13 @@ function Column(props) {
     //         isOver: monitor.isOver()
     //     })
     // })
+
+    useEffect(() => {
+        setTaskArray(props.data);
+        if (props.data.length == 0) {
+            setIsFirst(true);
+        }
+    }, [props])
 
     return(
         <div className="column">
