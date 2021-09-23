@@ -105,16 +105,32 @@ function Board(props) {
           }
 
         } else {
+          console.log(boardNameDropped)
+          console.log(boardNameDrag)
 
+          
           if (boardNameDropped === 'To-Do') {
-            dataToDO.splice(replaceCardIndex, 0, dragCardName);
-            dataToDO = [...dataToDO]
+            if (dataToDO.length < limitTodo) {
+              dataToDO.splice(replaceCardIndex, 0, dragCardName);
+              dataToDO = [...dataToDO]
+            } else {
+              return;
+            }
+            
           } else if (boardNameDropped === 'In Progress') {
-            dataInProgress.splice(replaceCardIndex, 0, dragCardName);
-            dataInProgress = [...dataInProgress]
+            if (dataInProgress.length < limitInProgress) {
+              dataInProgress.splice(replaceCardIndex, 0, dragCardName);
+              dataInProgress = [...dataInProgress]
+            } else {
+              return;
+            }
           } else {
-            dataCompleted.splice(replaceCardIndex, 0, dragCardName);
-            dataCompleted = [...dataCompleted]
+            if (dataCompleted.length < limitCompleted) {
+              dataCompleted.splice(replaceCardIndex, 0, dragCardName);
+              dataCompleted = [...dataCompleted]
+            } else {
+              return;
+            }
           }
 
         
