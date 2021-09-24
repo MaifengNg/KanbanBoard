@@ -1,7 +1,5 @@
 import "./Styles.css"
-import React, { useState, useCallback, useRef } from "react";
-import { DndProvider } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import React, { useRef } from "react";
 import { useDrop } from 'react-dnd';
 import { useDrag } from 'react-dnd'
 
@@ -9,7 +7,6 @@ function Card(props) {
     let cardId = props.id
     let index = [props.name, props.id, props.title];
     let name = props.name;
-    let moveTaskArray = props.moveTaskArray;
 
 
     // useDrag - the list item is draggable

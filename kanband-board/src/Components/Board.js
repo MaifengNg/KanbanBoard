@@ -79,6 +79,7 @@ function Board(props) {
     const [{ isOver }, dropRef] = useDrop({
       accept: 'item',
       drop: (item, monitor) => setTest(() => {
+        console.log(item)
         const dropResult = monitor.getDropResult();
 
         let dragCardIndex = item.index[1];
@@ -114,7 +115,7 @@ function Board(props) {
           if (boardNameDropped === 'To-Do') {
             if (dataToDO.length < limitTodo) {
               dataToDO.splice(replaceCardIndex, 0, dragCardName);
-              // dataToDO = [...dataToDO]
+              dataToDO = [...dataToDO]
             } else {
               return;
             }
@@ -122,14 +123,14 @@ function Board(props) {
           } else if (boardNameDropped === 'In Progress') {
             if (dataInProgress.length < limitInProgress) {
               dataInProgress.splice(replaceCardIndex, 0, dragCardName);
-              // dataInProgress = [...dataInProgress]
+              dataInProgress = [...dataInProgress]
             } else {
               return;
             }
           } else {
             if (dataCompleted.length < limitCompleted) {
               dataCompleted.splice(replaceCardIndex, 0, dragCardName);
-              // dataCompleted = [...dataCompleted]
+              dataCompleted = [...dataCompleted]
             } else {
               return;
             }
@@ -156,7 +157,7 @@ function Board(props) {
       })
   })
 
-    // useEffect(()=>{return;})
+    useEffect(()=>{return;})
   
 
     return (
