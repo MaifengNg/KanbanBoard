@@ -105,6 +105,7 @@ function App() {
     board.description = newDescription;
   }
 
+  // Test comment
   return (
     <div>
       {showAddNewBoardCard()}
